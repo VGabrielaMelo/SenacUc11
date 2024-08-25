@@ -72,4 +72,29 @@ public class ProdutosDAO {
         
         return listagem;
     }
+
+    public void venderProduto(int id) {
+        conectaDAO conexao = new conectaDAO();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            // Obtendo a conexão através da classe conectaDAO
+            conn = conexao.connectDB();
+            String sql = "UPDATE produtos SET status = 'Vendido' WHERE id = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, id);
+            pstmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // Fechando os recursos
+            try {
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
